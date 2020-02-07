@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+		<title>Guess Number</title>
+		
+		<link rel="shortcut icon" type="image/png" href="images/asphalt-game-hopscotch-278958.jpg"/>
+		
+		<link rel="stylesheet" type="text/css" href="css/guessnumber.css" />
+
+		<script type="text/javascript" src="util/Guess.js"></script>
+
+		<script type="text/javascript">
+			function checkGuess() {
+				Guess.guessCount++;
+				setResult("","", 0);
+				
+				var delayMillis = 100;
+				var guess = document.getElementById("guessInput").value;
+				if (guess < 1 || guess > 10) {
+					setResult("Nope. The number should be between 1 and 10.", "", delayMillis);
+				} else if (guess > Guess.targetNumber) {
+					setResult("Nope. Try with a smaller number.", "", delayMillis);
+				} else if (guess < Guess.targetNumber) {
+					setResult("Nope. Try with a bigger number.", "", delayMillis);
+				} else {
+					setResult("You got it! (in " + Guess.guessCount + " " + (Guess.guessCount == 1 ? "try" : "tries") + ")", "Keep playing with a different number...", delayMillis);					
+					Guess.reset();
+				}
+			}
+
+			function setResult(result, suggestion, displayDelayMillis) {
+				setTimeout(function() {
+					document.getElementById("suggestionMessage").textContent = suggestion;
+					document.getElementById("resultMessage").textContent = result;
+				}, displayDelayMillis);
+			}
+
+			function checkGuessOnEnter(event) {
+			  if (event.keyCode === 13) {
+			    event.preventDefault();
+			    checkGuess();
+			  }
+			}
+		</script>
+	</head>
+	<body>
+		<br>
+		<span class="greeting">Greetings!</span>
+		<br>
+		<br>
+		<br>
+		<span class="instructions">I am thinking of a number between 1 and 10. Can you guess it?</span>
+		<br>
+		<br>
+		<table>
+			<tr>
+				<td><input id="guessInput" class="txt" type="number" name="guess" onkeyup="checkGuessOnEnter(event)" /></td>
+				<td><button onclick="checkGuess()">Is that it?</button></td>
+			</tr>
+		</table>
+		<div id="resultSection">
+			<br>
+			<span id="resultMessage" class="response"></span>
+			<br>
+			<br>
+			<span id="suggestionMessage" class="suggestion"></span>
+		</div>
+	</body>
+</html>
